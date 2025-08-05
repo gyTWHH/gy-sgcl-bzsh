@@ -1,0 +1,74 @@
+<！doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<title>伤害计算器</title>
+<style>
+html,body{height:100%;margin:0;background:#111;color:#eee;font-family:Arial,Helvetica,sans-serif;display:flex;align-items:center;justify-content:center;}
+#panel{background：#1a1a1a；边框半径：8px；填充：2rem 3rem；最小宽度：420px；最大宽度：480px；box-shadow:0020px rgba(0,170,255,.25);}
+H2{页边距：001.2rem；文本对齐：居中；字体大小：1.8rem；}
+.group{显示：网格；网格模板列：1fr1fr；间距：1rem2rem；底边距：1.8rem；}
+标签{显示：弹性；弹性方向：列；字体大小：1rem；}
+输入{padding：.45rem。6rem；边框：无；边框半径：4px；背景：#222；颜色：#eee；字体大小：1rem；}
+按钮{宽度：100%；填充：.7rem0；边框：无；边框半径：4px；背景：#0af；颜色：#fff；字体大小：1。1rem；光标：指针；}
+按钮：悬停{background：#08c；}
+</style>
+</head>
+<body>
+<div id="panel">
+<h2>伤害计算器</h2>
+<div id="inputs"class="group"></div>
+<button onclick="calc()">计算</button>
+</div>
+
+<script>
+常数varlist=[
+{key：'bl'，name：'初始倍率'，Val:1}，
+{key：'gj'，name：'攻击'，Val:10}，
+{key：'fyt'，name：'防御T(对方)'，Val:4}，
+{key：'FYC'，name：'防御C(对方)'，Val:1}，
+{key：'GJZ'，name：'攻击加成'，Val:0}，
+{key：'fyj'，name：'防御减益'，Val:0}，
+{key：'bj'，name：'暴击'，Val:0}，
+{key：'bs'，name：'爆伤'，Val:0}，
+{key：'zs'，name：'增伤'，Val:0}，
+{key：'ys'，name：'易伤'，Val:0}，
+{key：'hjzs'，name：'魂晶增伤'，Val:0}，
+{key：'sc'，name：'魂晶生存（对方）'，Val:0}，
+{key：'dzs'，name：'大招增伤'，Val:0}，
+{key：'dys'，name：'大招易伤'，Val:0}
+];
+
+Const数据={}；
+Const inputsBox=document.getElementById('inputs')；
+
+varList.forEach(项目=>{
+data[item.key]=item.val；
+Constlabel=document.createElement('label')；
+label.innerHTML='${item.name}<输入类型="number"step="any"value="${item.val}">'；
+Const inp=label.querySelector('input')；
+inp.addEventListener('input'，e=>{
+data[item.key]=parseFloat(e.target.value)||0；
+calc()；
+  });
+inputsBox.appendChild(标签)；
+});
+
+函数calc(){
+Const{bl，gj，fyt，FYC，GJZ，fyj，bj，bs，zs，ys，hjzs，sc，dzs，dy}=数据；
+const0=bl*(gj-fyt)；
+const sc0=bl*(gj-fyc)；
+Const ST1=(gj*(1+GJZ)-fyt*(1-fyj))*(bj*(bs+1.5)+(1-bj))*(1+zs)*(1+ys)*(1+(hjzs-sc))*(1+dzs)*(1+dys)*bl；
+const SC1=(gj*(1+GJZ)-fyc*(1-fyj))*(bj*(bs+1.5)+(1-bj))*(1+zs)*(1+ys)*(1+(hjzs-sc))*(1+dzs)*(1+dys)*bl；
+const BLyS=(bj*(bs+1.5)+(1-bj))*(1+zs)*(1+ys)*(1+dzs)*(1+dys)*bl；
+警惕的(‘白值伤害
+初始伤害T：${st0.toFixed(2)}
+初始伤害C：${sc0.toFixed(2)}
+理论伤害T：${st1.toFixed(2)}
+理论伤害C：${sc1.toFixed(2)}
+有效倍率：${blys.toFixed(2)}')；
+}
+calc()；
+</script>
+</body>
+</html>
