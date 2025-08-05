@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>伤害计算器</title>
+<style>
+  html,body{height:100%;margin:0;background:#111;color:#eee;font-family:Arial,Helvetica,sans-serif;display:flex;align-items:center;justify-content:center;}
+  #panel{background:#1a1a1a;border-radius:8px;padding:2rem 3rem;min-width:420px;max-width:480px;box-shadow:0 0 20px rgba(0,170,255,.25);}
+  h2{margin:0 0 1.2rem;text-align:center;font-size:1.8rem;}
+  .group{display:grid;grid-template-columns:1fr 1fr;gap:1rem 2rem;margin-bottom:1.8rem;}
+  label{display:flex;flex-direction:column;font-size:1rem;}
+  input{padding:.45rem .6rem;border:none;border-radius:4px;background:#222;color:#eee;font-size:1rem;}
+  button{width:100%;padding:.7rem 0;border:none;border-radius:4px;background:#0af;color:#fff;font-size:1.1rem;cursor:pointer;}
+  button:hover{background:#08c;}
+</style>
+</head>
+<body>
+  <div id="panel">
+    <h2>伤害计算器</h2>
+    <div id="inputs" class="group"></div>
+    <button onclick="calc()">计算</button>
+  </div>
+
+<script>
+const varList = [
+  {key:'bl',name:'初始倍率',val:1},
+  {key:'gj',name:'攻击',val:10},
+  {key:'fyt',name:'防御 T（对方）',val:4},
+  {key:'fyc',name:'防御 C（对方）',val:1},
+  {key:'gjz',name:'攻击加成',val:0},
+  {key:'fyj',name:'防御减益',val:0},
+  {key:'bj',name:'暴击',val:0},
+  {key:'bs',name:'爆伤',val:0},
+  {key:'zs',name:'增伤',val:0},
+  {key:'ys',name:'易伤',val:0},
+  {key:'hjzs',name:'魂晶增伤',val:0},
+  {key:'sc',name:'魂晶生存（对方）',val:0},
+  {key:'dzs',name:'大招增伤',val:0},
+  {key:'dys',name:'大招易伤',val:0}
+];
+
+const data = {};
+const inputsBox = document.getElementById('inputs');
+
+varList.forEach(item=>{
+  data[item.key]=item.val;
+  const label=document.createElement('label');
+  label.innerHTML=`${item.name}<input type="number" step="any" value="${item.val}">`;
+  const inp=label.querySelector('input');
+  inp.addEventListener('input',e=>{
+    data[item.key]=parseFloat(e.target.value)||0;
+    calc();
+  });
+  inputsBox.appendChild(label);
+});
+
+function calc(){
+  const {bl,gj,fyt,fyc,gjz,fyj,bj,bs,zs,ys,hjzs,sc,dzs,dys}=data;
+  const st0=bl*(gj-fyt);
+  const sc0=bl*(gj-fyc);
+  const st1=(gj*(1+gjz)-fyt*(1-fyj))*(bj*(bs+1.5)+(1-bj))*(1+zs)*(1+ys)*(1+(hjzs-sc))*(1+dzs)*(1+dys)*bl;
+  const sc1=(gj*(1+gjz)-fyc*(1-fyj))*(bj*(bs+1.5)+(1-bj))*(1+zs)*(1+ys)*(1+(hjzs-sc))*(1+dzs)*(1+dys)*bl;
+  const blys=(bj*(bs+1.5)+(1-bj))*(1+zs)*(1+ys)*(1+dzs)*(1+dys)*bl;
+  alert(`白值伤害
+初始伤害 T： ${st0.toFixed(2)}
+初始伤害 C： ${sc0.toFixed(2)}
+理论伤害 T： ${st1.toFixed(2)}
+理论伤害 C： ${sc1.toFixed(2)}
+有效倍率   : ${blys.toFixed(2)}`);
+}
+calc();
+</script>
+</body>
+</html>
